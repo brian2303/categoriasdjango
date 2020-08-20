@@ -1,10 +1,12 @@
 {% extends 'index.html' %}
 
 {% block content %}
-        <a href="{% url 'vista_uno' %}">vista uno</a>
-        <ul>
-            {% for product in products %}
-                <li>{{product.id}} {{product.name}} {{product.cate.name}}</li>
-            {% endfor %}
-        </ul>
-{% endblock content %} 
+
+    <a href="{% url 'vista_dos' %}">Click</a>
+
+    <ul>
+        {% for product in products %}
+            <li>{{ product.id }} / {{ product.name }} / {{ product.cate.name }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
