@@ -74,10 +74,28 @@ class CategoryCreateView(CreateView):
     form_class =  CategoryForm
     template_name = 'category/create.html'
     success_url = reverse_lazy('category_list')
-    
+
+    # post que recibe las diferentes solicitudes.
+    def post(self,request,*args,**kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'add':
+                # form = CategoryForm(request.POST)
+                # son los mismos metodos get_form que el de arriba, solo lo dejo para acordarme
+                form = self.get_form()
+                data = form.save()
+            else:
+                data['error'] = 'No ha ingresado ninguna opcion'
+        except Exception as e :
+            data['error'] = str(e)
+        return JsonResponse(data)
+        
+    # contexto que se envia cuando se pide la creacion de una categoria
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = 'Crear categoria'
         context['entity'] = 'Categorias'
         context['list_url'] = reverse_lazy('category_list')
+        context['action'] = 'add'
         return context

@@ -11,6 +11,7 @@
         </div>
         <div class="card-body">
             {% csrf_token %}
+            <input type="hidden" name="action" value="{{action}}">
             {% if form.errors %}
                 <div class="alert alert-danger alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -41,6 +42,7 @@
     </div>
 </form>
 <script>
+    // validaciones para mostrar errores en formularios
     {% if form.errors %}
         let errores = '';
         {% for field in form %}
@@ -54,5 +56,33 @@
             icon : 'error'
         });
     {% endif %}
+    // implementando ajax para el envio de datos
+    $('form').on('submit',function (e){
+        // evitando que los datos se envien por defecto
+        e.preventDefault()
+        // metodo .serializeArray me sirve para obtener todos los valores que van en un form inputs
+        let parametros = $(this).serializeArray(); 
+        //console.log(parametros)
+        $.ajax({
+            url : '{% url 'category_create' %}',
+            type : 'POST',
+            data : parametros,
+            datatype : 'json'
+        }).done(function (data){
+            if(!data.hasOwnProperty('error')){
+                guardadoExitoso()
+                setTimeout(() =>{
+                    location.href = '{{ list_url }}'
+                },3000)
+                return false
+            }
+            // creada en archivo externo
+            mensajeError(data.error)
+        }).fail(function(){
+            console.log(data)
+        }).always(function(){
+
+        })
+    })
 </script>
 {% endblock content %}
