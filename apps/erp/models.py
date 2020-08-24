@@ -3,11 +3,18 @@ from datetime import datetime
 # Create your models here.
 from .choices import gender_choices
 
+# paquete de modelo a diccionario
+from django.forms import model_to_dict
+
 class Category(models.Model):
     name = models.CharField(max_length=150, verbose_name='Nombre', unique=True)
-
+    desc = models.CharField(max_length=300,verbose_name='Descripcion', null=True,blank=True)
     def __str__(self):
         return 'Nombre: {}'.format(self.name)
+
+    def to_JSON(self):
+        item = model_to_dict(self)
+        return item
 
     class Meta:
         verbose_name = 'Categoria'
