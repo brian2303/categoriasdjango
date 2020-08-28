@@ -5,11 +5,7 @@
     <div class="card card-default">
         <div class="card-header">
             <h3 class="card-title">
-                {% if action == 'add' %}
-                    <i class="fas fa-plus"></i>
-                {% else %}
-                    <i class="fas fa-edit"></i>
-                {% endif %}
+                <i class="fas fa-trash"></i>
                 {{title}}
             </h3>
         </div>
@@ -29,37 +25,22 @@
                     </ul>
                 </div>
             {% endif %}
-            <!-- personalizando un formulario -->
-            {% for field in form.visible_fields %}
-                <div class="form-group">
-                    <label >{{field.label}}</label>
-                    {{ field }}
-                </div>
-            {% endfor %}
+            <div class="alert alert-danger alert-dismissible">
+                <h5><i class="icon fas fa-ban"></i> Notificacion!</h5>
+                ¿Estas seguro de eliminar el registro nro {{ object.id }} ?
+            </div>
         </div>
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary btnTest" id="btn-new">
-                Guardar Registro
-                <i class="fas fa-plus-circle"></i>
+            <button type="submit" class="btn btn-danger btnTest" >
+                Si,Aceptar
             </button>
+            <a  href="{{list_url}}" class="btn btn-primary btnTest">
+                Cancelar
+            </a>
         </div>
     </div>
 </form>
 <script>
-    // validaciones para mostrar errores en formularios
-    {% if form.errors %}
-        let errores = '';
-        {% for field in form %}
-            {% for error in field.errors %}
-                errores += '{{ error }}\n'; 
-            {% endfor %}
-        {% endfor %}
-        Swal.fire({
-            title:'Error',
-            text : errores,
-            icon : 'error'
-        });
-    {% endif %}
     // implementando ajax para el envio de datos
     $('form').on('submit',function (e){
         // evitando que los datos se envien por defecto

@@ -18,7 +18,9 @@ class CategoryForm(ModelForm):
         model = Category
         fields = '__all__'
 
-        # personalizando el campo name del modelo
+        """
+            personalizacion de campos del modelo para mostrar en pantalla
+        """
         widgets = {
             'name' : TextInput(
                 attrs = {
@@ -32,7 +34,10 @@ class CategoryForm(ModelForm):
                 }
             )
         }
-    
+
+    """
+        sobre escribiendo el metodo save de la clase ModelForm
+    """
     def save(self,commit=True):
         data = {}
         form = super()
